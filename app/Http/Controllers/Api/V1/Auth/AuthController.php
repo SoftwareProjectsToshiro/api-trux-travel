@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\V1\Auth;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use GuzzleHttp\Client;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use App\CentralLogics\Helpers;
@@ -15,8 +16,11 @@ class AuthController extends Controller
     public function register(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'name' => 'required|unique:users',
-            'password' => 'required|min:6',
+            'nombre' => 'required',
+            'apellido' => 'required',
+            'password' => 'required|min:8',
+            'email' => 'required|email|unique:users,email',
+            'phone' => 'required|unique:users,phone'
         ]);
 
         if ($validator->fails()) {
@@ -25,23 +29,41 @@ class AuthController extends Controller
             ], 403);
         }
 
-        $user = User::create([
-            'name' => $request->name,
-            'password' => bcrypt($request->password),
-            'email_verified_at' => now(),
+        $data = [
+            'email' => $request->nombre,
+            'password' => $request->password
+        ];
+
+        $client = new Client();
+        $response = $client->request('POST', 'https://integraciones-app-cjzse57yha-uc.a.run.app/api/v1/register', [
+            'json' => $data,
+            'headers' => [
+                'Accept' => 'application/json'
+            ],
         ]);
+
+        $statusCode = $response->getStatusCode();
+        if($statusCode != 200){
+            return response()->json(['error' => 'Error en la integración'], 500);
+        }
+
+        $msg = json_decode($response->getBody()->getContents(), true)['msg'];
+
+        $user = new User();
+        $user->name = $request->nombre;
+        $user->last_name = $request->apellido;
+        $user->email = $request->email;
+        $user->phone = $request->phone;
 
         $user->save();
 
-        $token = $user->createToken('UserAuth')->plainTextToken;
-
-        return response()->json(['token' => $token, 'name' => $user['name']], 200);
+        return response()->json(['msg' => $msg], 200);
     }
 
     public function login(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'name' => 'required',
+            'email' => 'required',
             'password' => 'required|min:6'
         ]);
 
@@ -51,25 +73,36 @@ class AuthController extends Controller
             ], 403);
         }
         $data = [
-            'name' => $request->name,
+            'email' => $request->email,
             'password' => $request->password
         ];
 
+        $client = new Client();
+        $response = $client->request('POST', 'https://integraciones-app-cjzse57yha-uc.a.run.app/api/v1/login', [
+            'json' => $data,
+            'headers' => [
+                'Accept' => 'application/json'
+            ],
+        ]);
 
-        if (auth()->attempt($data)) {
-
-            $token = auth()->user()->createToken('UserAuth')->plainTextToken;
-            $user = auth()->user();
-            $user->save();
-
-            return response()->json(['token' => $token, 'user' => $user['name']], 200);
-        } else {
-            $errors = [];
-            array_push($errors, ['code' => 'auth-001', 'message' => "Credenciales Invalidas"]);
-            return response()->json([
-                'errors' => $errors
-            ], 401);
+        $statusCode = $response->getStatusCode();
+        if ($statusCode != 200){
+            return response()->json(['error' => 'Error en la integración'], 500);
         }
+
+        $token = json_decode($response->getBody()->getContents(), true);
+        
+        $user = User::where('email', $request->email)->first();
+
+        if (!$user) {
+            return response()->json([
+                'errors' => [
+                    'email' => ['Correo electrónico no encontrado.']
+                ]
+            ], 403);
+        }
+
+        return response()->json(['token' => $token, 'user' => $user], 200);
     }
 
     public function logout(Request $request)
