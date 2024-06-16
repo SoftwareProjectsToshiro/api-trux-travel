@@ -50,8 +50,8 @@ class AuthController extends Controller
         $msg = json_decode($response->getBody()->getContents(), true)['msg'];
 
         $user = new User();
-        $user->name = $request->nombre;
-        $user->last_name = $request->apellido;
+        $user->nombre = $request->nombre;
+        $user->apellido = $request->apellido;
         $user->email = $request->email;
         $user->phone = $request->phone;
 
