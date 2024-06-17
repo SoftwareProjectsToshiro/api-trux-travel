@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\CentralLogics\Helpers;
 use App\Http\Controllers\Controller;
+use GuzzleHttp\Client;
+use GuzzleHttp\Exception\ClientException;
 
 class UserController extends Controller
 {
