@@ -78,37 +78,25 @@ class AuthController extends Controller
             'password' => $request->password
         ];
 
-        try{
-            $client = new Client();
-            $response = $client->request('POST', 'https://integraciones-app-cjzse57yha-uc.a.run.app/api/v1/login', [
-                'json' => $data,
-                'headers' => [
-                    'Content-type' => 'application/json'
-                ],
-            ]);
-        } catch (ClientException $e) {
-            $responseBody = $e->getResponse()->getBody()->getContents();
-            $response = json_decode($responseBody, true);
-            $error_message = $response['err']['message'];
-
-            return response()->json([
-                'errors' => [
-                    'code' => 'email',
-                    'message' => $error_message
-                ]
-            ], 400);
-        }
+        
+        $client = new Client();
+        $response = $client->request('POST', 'https://integraciones-app-cjzse57yha-uc.a.run.app/api/v1/login', [
+            'json' => $data,
+            'headers' => [
+                'Content-type' => 'application/json'
+            ],
+        ]);
 
         $statusCode = $response->getStatusCode();
         if ($statusCode != 200){
 
             $err = json_decode($response->getBody()->getContents(), true)['err'];
-            $error_message = json_decode($err, true)['message'];
+            $error_message = $err['message'];
             return response()->json([
                 'errors' => [
-                    'code' => 'email',
-                    'message' => $error_message
-                ]], 403);
+                    ['code' => 'email', 'message' => $error_message]
+                ]
+            ], 403);
         }
 
         $token = json_decode($response->getBody()->getContents(), true);
@@ -118,8 +106,7 @@ class AuthController extends Controller
         if (!$user) {
             return response()->json([
                 'errors' => [
-                    'code' => 'email',
-                    'message' => 'Correo electrónico no encontrado.'
+                    ['code' => 'email', 'message' => 'Correo electrónico no encontrado.']
                 ]
             ], 403);
         }
