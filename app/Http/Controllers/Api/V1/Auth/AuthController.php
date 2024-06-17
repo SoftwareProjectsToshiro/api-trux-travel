@@ -90,11 +90,11 @@ class AuthController extends Controller
         $statusCode = $response->getStatusCode();
         if ($statusCode != 200){
 
-            $err = json_decode($response->getBody()->getContents(), true)['err'];
-            $error_message = $err['message'];
+            $err = json_decode($response->getBody()->getContents(), true)['msg'];
+            
             return response()->json([
                 'errors' => [
-                    ['code' => 'email', 'message' => $error_message]
+                    ['code' => 'email', 'message' => $err]
                 ]
             ], 403);
         }
