@@ -82,11 +82,35 @@ class UserController extends Controller
         $user = User::findOrFail($id);
         $user->nombre = $request->nombre;
         $user->apellido = $request->apellido;
-        $user->email = $request->email;
-        $user->phone = $request->phone;
-        $user->update();
 
-        return response()->json($user, 200);
+        if($user->email != $request->email) {
+            try{
+
+                $client = new Client();
+                $response = $client->request('POST', 'https://integraciones-app-cjzse57yha-uc.a.run.app/api/v1/update-email', [
+                    'json' => $data,
+                    'headers' => [
+                        'Content-Type' => 'application/json'
+                    ],
+                ]);
+
+            } catch (ClientException $e) {
+                return response()->json([
+                    'errors' => [
+                        ['code' => 'email', 'message' => 'Email ya registrado.']
+                    ]
+                ], 403);
+            }
+    
+            $msg = json_decode($response->getBody()->getContents(), true)['msg'];
+
+            $user->email = $request->email;
+        }
+
+        $user->phone = $request->phone;
+        $user->save();
+
+        return response()->json([], 200);
     }
 
     /**
