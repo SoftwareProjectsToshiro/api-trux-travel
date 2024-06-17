@@ -55,10 +55,9 @@ class UserController extends Controller
     public function update(Request $request, $id)
     {
         $validatedData = Validator::make($request->all(), [
-            'first_name' => 'required|string|max:255',
-            'last_name' => 'required|string|max:255',
+            'nombre' => 'required|string|max:255',
+            'apellido' => 'required|string|max:255',
             'email' => 'required|max:255|unique:users,email,' . $id . ',user_id',
-            'password' => 'required|string|min:8',
             'phone' => 'nullable|string|max:20',
         ]);
 

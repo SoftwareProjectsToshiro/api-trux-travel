@@ -24,4 +24,9 @@ Route::group(['namespace' => 'Api\V1', 'middleware'=>['api']], function () {
             Route::get('verificar-token', 'AuthController@verifyToken');
         });
     });
+
+    Route::group(['prefix' => 'user'], function () {
+        Route::get('{email}', 'UserController@show');
+        Route::put('update/{email}', 'UserController@update');
+    });
 });
