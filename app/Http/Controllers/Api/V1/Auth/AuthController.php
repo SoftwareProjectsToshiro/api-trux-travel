@@ -44,7 +44,7 @@ class AuthController extends Controller
 
         $statusCode = $response->getStatusCode();
         if($statusCode != 200){
-            return response()->json(['error' => 'Error en la integración'], 500);
+            return response()->json(['errors' => 'Error en la integración'], 500);
         }
 
         $msg = json_decode($response->getBody()->getContents(), true)['msg'];
