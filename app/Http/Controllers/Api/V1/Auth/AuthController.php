@@ -94,7 +94,7 @@ class AuthController extends Controller
             return response()->json([
                 'errors' => [
                     'code' => 'email',
-                    'message' => $response->getBody()->getContents()
+                    'message' => $error_message
                 ]], 500);
         }
 
