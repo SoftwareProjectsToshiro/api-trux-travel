@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('telefono', 9)->unique();
             $table->date('fecha_nacimiento');
             $table->boolean('isActived')->default(true);
+            $table->boolean('isDeleted')->default(false);
             $table->timestamps();
         });
     }

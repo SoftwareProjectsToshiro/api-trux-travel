@@ -6,6 +6,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use App\Models\Tourist;
+use App\Models\Reservation;
 
 class User extends Authenticatable
 {
@@ -45,5 +47,17 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function tourists()
+    {
+        return $this->belongsToMany(Tourist::class, 'user_tourist', 'user_id', 'tourist_id')
+                    ->withPivot('relationship')
+                    ->withTimestamps();
+    }
+
+    public function reservations()
+    {
+        return $this->hasMany(Reservation::class, 'user_id');
     }
 }

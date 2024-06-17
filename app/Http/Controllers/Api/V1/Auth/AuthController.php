@@ -39,7 +39,7 @@ class AuthController extends Controller
         $response = $client->request('POST', 'https://integraciones-app-cjzse57yha-uc.a.run.app/api/v1/register', [
             'json' => $data,
             'headers' => [
-                'Accept' => 'application/json'
+                'Content-Type' => 'application/json'
             ],
         ]);
 
