@@ -88,8 +88,11 @@ class AuthController extends Controller
             ]);
         } catch (ClientException $e) {
             $json_data = $e->getMessage();
+            echo $json_data;
             $response = json_decode($json_data, true);
+            echo $response;
             $error_message = $response['err']['message'];
+            echo $error_message;
 
             return response()->json([
                 'errors' => [
