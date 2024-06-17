@@ -87,7 +87,15 @@ class AuthController extends Controller
 
         $statusCode = $response->getStatusCode();
         if ($statusCode != 200){
-            return response()->json(['error' => 'Error en la integración'], 500);
+
+            $error_firebase = json_decode($response->getBody()->getContents(), true)['err'];
+            $error_message = json_decode(Helpers::translate($error_firebase['message']), true);
+
+            return response()->json([
+                'errors' => [
+                    'code' => 'email',
+                    'message' => $response->getBody()->getContents()
+                ]], 500);
         }
 
         $token = json_decode($response->getBody()->getContents(), true);
