@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\V1\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,7 +27,8 @@ Route::group(['namespace' => 'Api\V1', 'middleware'=>['api']], function () {
     });
 
     Route::group(['prefix' => 'user'], function () {
-        Route::get('{email}', 'UserController@show');
-        Route::put('update/{email}', 'UserController@update');
+        Route::get('index', 'UserController@index');
+        Route::get('/{email}', [UserController::class, 'show']);
+        Route::put('/{id}', 'UserController@update');
     });
 });

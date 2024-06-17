@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api\V1;
 
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\CentralLogics\Helpers;
+use App\Http\Controllers\Controller;
 
 class UserController extends Controller
 {
@@ -14,7 +15,9 @@ class UserController extends Controller
      */
     public function index()
     {
-        //
+        // Get all users
+        $users = User::all();
+        return response()->json($users, 200);
     }
 
     /**
@@ -36,11 +39,20 @@ class UserController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(User $user)
+    public function show(Request $request, $email)
     {
-        //
-    }
 
+        $user = User::where('email', $email)->first();
+        
+        if($user == null) {
+            return response()->json([
+                'errors' => [
+                    ['code' => 'email', 'message' => 'Not Found']
+                ]
+            ], 403);
+        }
+        return response()->json($user, 200);
+    }
     /**
      * Show the form for editing the specified resource.
      */
@@ -57,18 +69,22 @@ class UserController extends Controller
         $validatedData = Validator::make($request->all(), [
             'nombre' => 'required|string|max:255',
             'apellido' => 'required|string|max:255',
-            'email' => 'required|max:255|unique:users,email,' . $id . ',user_id',
+            'email' => 'required|max:255|unique:users,email,' . $id,
             'phone' => 'nullable|string|max:20',
         ]);
 
-        if ($validator->fails()) {
+        if ($validatedData->fails()) {
             return response()->json([
-                'errors' =>  Helpers::error_processor($validator)
+                'errors' =>  Helpers::error_processor($validatedData)
             ], 403);
         }
 
         $user = User::findOrFail($id);
-        $user->update($validatedData);
+        $user->nombre = $request->nombre;
+        $user->apellido = $request->apellido;
+        $user->email = $request->email;
+        $user->phone = $request->phone;
+        $user->update();
 
         return response()->json($user, 200);
     }
