@@ -87,7 +87,9 @@ class UserController extends Controller
 
         if($user->email != $request->email) {
             try{
-
+                $data = [
+                    'email' => $user->email
+                ];
                 $client = new Client();
                 $response = $client->request('POST', 'https://integraciones-app-cjzse57yha-uc.a.run.app/api/v1/update-email', [
                     'json' => $data,
