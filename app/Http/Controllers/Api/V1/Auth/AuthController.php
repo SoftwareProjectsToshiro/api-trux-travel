@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\ClientException;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use App\CentralLogics\Helpers;
@@ -77,13 +78,26 @@ class AuthController extends Controller
             'password' => $request->password
         ];
 
-        $client = new Client();
-        $response = $client->request('POST', 'https://integraciones-app-cjzse57yha-uc.a.run.app/api/v1/login', [
-            'json' => $data,
-            'headers' => [
-                'Accept' => 'application/json'
-            ],
-        ]);
+        try{
+            $client = new Client();
+            $response = $client->request('POST', 'https://integraciones-app-cjzse57yha-uc.a.run.app/api/v1/login', [
+                'json' => $data,
+                'headers' => [
+                    'Accept' => 'application/json'
+                ],
+            ]);
+        } catch (ClientException $e) {
+            $json_data = $e->getMessage();
+            $response = json_decode($json_data, true);
+            $error_message = $response['err']['message'];
+
+            return response()->json([
+                'errors' => [
+                    'code' => 'email',
+                    'message' => $error_message
+                ]
+            ], 400);
+        }
 
         $statusCode = $response->getStatusCode();
         if ($statusCode != 200){
