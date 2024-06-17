@@ -79,22 +79,18 @@ class AuthController extends Controller
         ];
 
         
-        $client = new Client();
-        $response = $client->request('POST', 'https://integraciones-app-cjzse57yha-uc.a.run.app/api/v1/login', [
-            'json' => $data,
-            'headers' => [
-                'Content-type' => 'application/json'
-            ],
-        ]);
-
-        $statusCode = $response->getStatusCode();
-        if ($statusCode != 200){
-
-            $err = json_decode($response->getBody()->getContents(), true)['msg'];
-            
+        try{
+            $client = new Client();
+            $response = $client->request('POST', 'https://integraciones-app-cjzse57yha-uc.a.run.app/api/v1/login', [
+                'json' => $data,
+                'headers' => [
+                    'Content-type' => 'application/json'
+                ],
+            ]);
+        } catch (ClientException $e) {
             return response()->json([
                 'errors' => [
-                    ['code' => 'email', 'message' => $err]
+                    ['code' => 'email', 'message' => 'Credenciales inválidas.']
                 ]
             ], 403);
         }
