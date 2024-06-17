@@ -88,7 +88,6 @@ class AuthController extends Controller
         $statusCode = $response->getStatusCode();
         if ($statusCode != 200){
 
-            // get field "err" on json
             $err = json_decode($response->getBody()->getContents(), true)['err'];
             $error_message = Helpers::translate(json_decode($err, true)['message']);
 
