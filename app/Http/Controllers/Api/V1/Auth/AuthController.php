@@ -97,7 +97,8 @@ class AuthController extends Controller
         if (!$user) {
             return response()->json([
                 'errors' => [
-                    'email' => ['Correo electrónico no encontrado.']
+                    'code' => 'email',
+                    'message' => 'Correo electrónico no encontrado.'
                 ]
             ], 403);
         }
