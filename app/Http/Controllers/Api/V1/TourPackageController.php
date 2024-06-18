@@ -25,6 +25,12 @@ class TourPackageController extends Controller
         //
     }
 
+    public function get_all_package(Request $request)
+    {
+        $package = TourPackage::where('isActived', 1)->with('tours')->get();
+        return response()->json($package, 200);
+    }
+
     /**
      * Store a newly created resource in storage.
      */
@@ -38,7 +44,7 @@ class TourPackageController extends Controller
             'imagen' => 'required'
         ]);
 
-        $tour = Tour::create($validator);
+        $packages = TourPackage::create($validator);
 
         return response()->json($tour, 200);
     }

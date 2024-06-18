@@ -12,8 +12,8 @@ class TourPackage extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name',
-        'description',
+        'nombre',
+        'descripcion',
         'tipo_paquete',
         'precio',
         'imagen',
@@ -25,7 +25,7 @@ class TourPackage extends Model
 
     public function tours()
     {
-        return $this->hasMany(Tour::class, 'package_id');
+        return $this->hasMany(Tour::class, 'tour_package_id');
     }
 
     public function reservations()

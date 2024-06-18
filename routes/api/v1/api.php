@@ -31,4 +31,8 @@ Route::group(['namespace' => 'Api\V1', 'middleware'=>['api']], function () {
         Route::get('/{email}', [UserController::class, 'show']);
         Route::put('/{id}', 'UserController@update');
     });
+
+    Route::group(['prefix' => 'packages'], function () {
+        Route::get('/', 'TourPackageController@get_all_package');
+    });
 });
