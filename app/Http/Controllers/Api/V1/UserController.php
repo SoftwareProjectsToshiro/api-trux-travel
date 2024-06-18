@@ -115,7 +115,7 @@ class UserController extends Controller
         $user->phone = $request->phone;
         $user->save();
 
-        return response()->json([], 200);
+        return response()->json(['msg' => $msg], 200);
     }
 
     /**
