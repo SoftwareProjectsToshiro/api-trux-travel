@@ -80,7 +80,8 @@ class UserController extends Controller
                 'errors' =>  Helpers::error_processor($validatedData)
             ], 403);
         }
-
+        
+        $msg = $request->nombre . ' ' . $request->apellido . ' actualizado correctamente.';
         $user = User::findOrFail($id);
         $user->nombre = $request->nombre;
         $user->apellido = $request->apellido;
