@@ -40,7 +40,7 @@ class TouristController extends Controller
             'apellido_materno' => 'required',
             'sexo' => 'required',
             'email' => 'required|unique:tourists,email',
-            'telefono' => 'required|unique:tourists,phone',
+            'telefono' => 'required|unique:tourists,telefono',
             'fecha_nacimiento' => 'required'
         ]);
 
