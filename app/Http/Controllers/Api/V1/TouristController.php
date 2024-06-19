@@ -33,7 +33,7 @@ class TouristController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'user_id' => 'required',
+            'user_email' => 'required',
             'dni' => 'required',
             'nombre' => 'required',
             'apellido_paterno' => 'required',
@@ -50,7 +50,7 @@ class TouristController extends Controller
             ], 403);
         };
 
-        $user = User::find($request->user_id);
+        $user = User::where('email', $request->user_email)->first();
         if (!$user) {
             return response()->json(['error' => 'User not found'], 404);
         }
