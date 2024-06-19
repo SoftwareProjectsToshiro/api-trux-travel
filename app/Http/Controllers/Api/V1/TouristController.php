@@ -3,8 +3,11 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Models\Tourist;
+use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Helpers\Helpers;
+use Illuminate\Support\Facades\Validator;
 
 class TouristController extends Controller
 {
@@ -30,6 +33,7 @@ class TouristController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
+            'user_id' => 'required',
             'dni' => 'required',
             'nombre' => 'required',
             'apellido_paterno' => 'required',
@@ -46,11 +50,27 @@ class TouristController extends Controller
             ], 403);
         };
 
-        $tourist = Turist::create($validator);
+        $user = User::find($request->user_id);
+        if (!$user) {
+            return response()->json(['error' => 'User not found'], 404);
+        }
 
-        return response()->json([
-            'tourist' => $tourist
-        ], 200);
+        $msg = $request->nombre . ' ' . $request->apellido_paterno . ' ' . $request->apellido_materno . ' has been created';
+
+        $tourist = new Tourist();
+        $tourist->dni = $request->dni;
+        $tourist->nombre = $request->nombre;
+        $tourist->apellido_paterno = $request->apellido_paterno;
+        $tourist->apellido_materno = $request->apellido_materno;
+        $tourist->sexo = $request->sexo;
+        $tourist->email = $request->email;
+        $tourist->telefono = $request->telefono;
+        $tourist->fecha_nacimiento = $request->fecha_nacimiento;
+        $tourist->save();
+
+        $tourist->users()->attach($request->user_id);
+
+        return response()->json(['msg' => $msg], 200);
 
     }
 

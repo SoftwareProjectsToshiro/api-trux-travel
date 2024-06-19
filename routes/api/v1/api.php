@@ -36,4 +36,8 @@ Route::group(['namespace' => 'Api\V1', 'middleware'=>['api']], function () {
         Route::get('/', 'TourPackageController@get_all_package');
         Route::get('/{id}/tour', 'TourController@get_all_tours_by_package');
     });
+
+    Route::group(['prefix' => 'tourist'], function () {
+        Route::post('/', 'TouristController@store');
+    });
 });
