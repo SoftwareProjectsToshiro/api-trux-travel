@@ -27,7 +27,7 @@ class TourPackageController extends Controller
 
     public function get_all_package(Request $request)
     {
-        $package = TourPackage::where('isActived', 1)->with('tours')->get();
+        $package = TourPackage::where('isActived', 1)->get();
         return response()->json($package, 200);
     }
 

@@ -63,4 +63,10 @@ class TourController extends Controller
     {
         //
     }
+
+    public function get_all_tours_by_package(Request $request, $package_id)
+    {
+        $tours = Tour::where('tour_package_id', $package_id)->where('isActived', 1)->get();
+        return response()->json($tours, 200);
+    }
 }

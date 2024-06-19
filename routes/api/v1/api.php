@@ -34,5 +34,9 @@ Route::group(['namespace' => 'Api\V1', 'middleware'=>['api']], function () {
 
     Route::group(['prefix' => 'packages'], function () {
         Route::get('/', 'TourPackageController@get_all_package');
+
+        Route::group(['prefix' => 'tour'], function () {
+            Route::get('/{id}', 'TourController@get_all_tours_by_package');
+        });
     });
 });
