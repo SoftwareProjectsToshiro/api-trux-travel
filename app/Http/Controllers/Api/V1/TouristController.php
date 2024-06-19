@@ -6,7 +6,7 @@ use App\Models\Tourist;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Helpers\Helpers;
+use App\CentralLogics\Helpers;
 use Illuminate\Support\Facades\Validator;
 
 class TouristController extends Controller
