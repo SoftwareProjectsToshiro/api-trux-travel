@@ -89,7 +89,7 @@
         </div>
         <form action="{!!route('niubiz-success', ['order_id'=>12, '_token' => $response_token ])!!}" method="POST">
             <script type="text/javascript"
-                src="https://static-content-qas.vnforapps.com/v2/js/checkout.js?qa=true"
+                src="https://static-content-qas.vnforapps.com/env/sandbox/js/checkout.js"
                 data-sessiontoken="{{$session_key}}"
                 data-channel="web"
                 data-merchantid="{{$merchantId}}"
