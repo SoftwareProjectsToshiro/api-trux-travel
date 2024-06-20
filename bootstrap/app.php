@@ -12,7 +12,10 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
-        //
+        $middleware->validateCsrfTokens(except: [
+            'payment-mobile',
+            'niubiz-success/*',
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //
