@@ -16,7 +16,7 @@ class NiubizPaymentController extends Controller
         $encodedCode = base64_encode($code);
         $merchantId = env('NIUBIZ_MERCHANT_ID');
         $client = new \GuzzleHttp\Client();
-        $response = $client->request('GET', 'https://apisandbox.vnforappstest.com/api.security/v1/security', [
+        $response = $client->request('GET', 'https://apitestenv.vnforapps.com/api.security/v1/security', [
             'headers' => [
                 'accept' => 'text/plain',
                 'authorization' => 'Basic '.$encodedCode,
