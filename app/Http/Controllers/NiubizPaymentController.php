@@ -12,9 +12,9 @@ class NiubizPaymentController extends Controller
 {
     public function viewNiubiz(Request $request, $order_id)
     {
-        $code = env('NIUBIZ_USERNAME') . ':' . env('NIUBIZ_PASSWORD');
+        $code = "integraciones@niubiz.com.pe" . ':' . "_7z3@8fF";
         $encodedCode = base64_encode($code);
-        $merchantId = env('NIUBIZ_MERCHANT_ID');
+        $merchantId = 456879852;
         $client = new \GuzzleHttp\Client();
         $response = $client->request('GET', 'https://apitestenv.vnforapps.com/api.security/v1/security', [
             'headers' => [
