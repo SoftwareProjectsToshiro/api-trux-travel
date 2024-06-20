@@ -46,7 +46,7 @@ class NiubizPaymentController extends Controller
     {
         $transactionToken = $request->transactionToken;
         $response = new \GuzzleHttp\Client();
-        $merchantId = env('NIUBIZ_MERCHANT_ID');
+        $merchantId = 456879852;
         $response = $response->request('POST', 'https://apisandbox.vnforappstest.com/api.authorization/v3/authorization/ecommerce/'.$merchantId, [
             'headers' => [
                 'Authorization' => $request->_token,
