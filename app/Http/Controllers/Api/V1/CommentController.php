@@ -29,9 +29,9 @@ class CommentController extends Controller
         return response()->json(['message' => 'Comment created successfully', 'comment' => $comment], 201);
     }
 
-    public function index($tourPackageId)
+    public function index($user_id)
     {
-        $comments = Comment::where('tour_package_id', $tourPackageId)->get();
+        $comments = Comment::where('user_id', $user_id)->get();
         return response()->json(['comments' => $comments]);
     }
 }

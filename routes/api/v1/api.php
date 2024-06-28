@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\V1\UserController;
 
@@ -49,6 +48,6 @@ Route::group(['namespace' => 'Api\V1', 'middleware'=>['api']], function () {
 
     Route::group(['prefix' => 'comments'], function () {
         Route::post('/', 'CommentController@store');
-        Route::get('/{tourPackageId}', 'CommentController@index');
+        Route::get('/{user_id}', 'CommentController@index');
     });
 });
