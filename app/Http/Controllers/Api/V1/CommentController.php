@@ -18,7 +18,7 @@ class CommentController extends Controller
             'rating' => 'required|integer',
         ]);
 
-        $comment = Comment::create([
+        Comment::create([
             'tour_package_id' => $validated['tour_package_id'],
             'user_id' => $validated['user_id'],
             'content' => $validated['content'],
@@ -26,7 +26,8 @@ class CommentController extends Controller
             'rating' => $validated['rating'],
         ]);
 
-        return response()->json(['message' => 'Comment created successfully', 'comment' => $comment], 201);
+        $msg = 'Comentario creado correctamente.';
+        return response()->json(['msg' => $msg], 200);
     }
 
     public function index($user_id)
