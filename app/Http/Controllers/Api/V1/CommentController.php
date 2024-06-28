@@ -15,7 +15,7 @@ class CommentController extends Controller
         $validated = Validator::make($request->all(),[
             'tour_package_id' => 'required|exists:tour_packages,id',
             'user_id' => 'required|exists:users,id',
-            'content' => 'required|string',
+            'content_' => 'required|string',
             'title' => 'required|string',
             'rating' => 'required|integer',
         ]);
@@ -24,15 +24,15 @@ class CommentController extends Controller
             return response()->json([
                 'errors' => Helpers::error_processor($validated)
             ], 403);
-        };
+        }
 
-        Comment::create([
-            'tour_package_id' => $validated['tour_package_id'],
-            'user_id' => $validated['user_id'],
-            'content' => $validated['content'],
-            'title' => $validated['title'],
-            'rating' => $validated['rating'],
-        ]);
+        $comment = new Comment();
+        $comment->tour_package_id = $request->tour_package_id;
+        $comment->user_id = $request->user_id;
+        $comment->content = $request->content_;
+        $comment->title = $request->title;
+        $comment->rating = $request->rating;
+        $comment->save();
 
         $msg = 'Comentario creado correctamente.';
         return response()->json(['msg' => $msg], 200);
