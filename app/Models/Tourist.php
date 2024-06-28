@@ -11,7 +11,8 @@ class Tourist extends Model
     use HasFactory;
 
     protected $fillable = [
-        'dni',
+        'tipo_documento',
+        'documento_identidad',
         'nombre',
         'apellido_paterno',
         'apellido_materno',
@@ -23,7 +24,18 @@ class Tourist extends Model
 
     public function users()
     {
-        return $this->belongsToMany(User::class, 'user_tourist', 'tourist_id', 'user_id')
-                    ->withTimestamps();
+        return $this->belongsToMany(User::class, 'user_tourist', 'tourist_id', 'user_id');
+    }
+
+    public function tourPackages()
+    {
+        return $this->belongsToMany(TourPackage::class, 'tour_package_tourist')
+            ->using(TourPackageTourist::class)
+            ->withTimestamps();
+    }
+
+    public function reservations()
+    {
+        return $this->hasMany(Reservation::class);
     }
 }

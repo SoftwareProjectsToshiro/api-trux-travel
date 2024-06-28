@@ -17,7 +17,6 @@ class UserController extends Controller
      */
     public function index()
     {
-        // Get all users
         $users = User::all();
         return response()->json($users, 200);
     }
@@ -45,7 +44,7 @@ class UserController extends Controller
     {
 
         $user = User::where('email', $email)->first();
-        
+
         if($user == null) {
             return response()->json([
                 'errors' => [
@@ -80,7 +79,7 @@ class UserController extends Controller
                 'errors' =>  Helpers::error_processor($validatedData)
             ], 403);
         }
-        
+
         $msg = $request->nombre . ' ' . $request->apellido . ' actualizado correctamente.';
         $user = User::findOrFail($id);
         $user->nombre = $request->nombre;
@@ -107,7 +106,7 @@ class UserController extends Controller
                     ]
                 ], 403);
             }
-    
+
             $msg = json_decode($response->getBody()->getContents(), true)['msg'];
 
             $user->email = $request->email;

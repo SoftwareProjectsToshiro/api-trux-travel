@@ -19,7 +19,7 @@ Route::group(['namespace' => 'Api\V1', 'middleware'=>['api']], function () {
     Route::group(['namespace' => 'Auth'], function () {
         Route::post('register', 'AuthController@register');
         Route::post('login', 'AuthController@login');
-    
+
         Route::middleware('auth:sanctum')->group(function () {
             Route::get('logout', 'AuthController@logout');
             Route::get('verificar-token', 'AuthController@verifyToken');
@@ -39,5 +39,16 @@ Route::group(['namespace' => 'Api\V1', 'middleware'=>['api']], function () {
 
     Route::group(['prefix' => 'tourist'], function () {
         Route::post('/', 'TouristController@store');
+        Route::get('/{doc}', 'TouristController@index');
+    });
+
+    Route::group(['prefix' => 'reservations'], function () {
+        Route::post('/', 'ReservationController@store');
+        Route::get('/{id}', 'ReservationController@show');
+    });
+
+    Route::group(['prefix' => 'comments'], function () {
+        Route::post('/', 'CommentController@store');
+        Route::get('/{tourPackageId}', 'CommentController@index');
     });
 });

@@ -3550,4 +3550,7 @@
   'manual_charge_done' => 'Cobro manual realizado',
   'manual_charge_not_done' => 'Cobro manual no realizado',
   'price_barra_libre_updated_successfully' => 'Precio de barra libre actualizado con éxito',
+  'The documento identidad has already been taken.' => 'Documento de identidad ya registrado',
+  'The telefono has already been taken.' => 'Teléfono ya registrado',
+  'The selected tour package id is invalid.' => 'El Paquete seleccionado es inválido',
 );

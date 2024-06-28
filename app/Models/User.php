@@ -51,9 +51,7 @@ class User extends Authenticatable
 
     public function tourists()
     {
-        return $this->belongsToMany(Tourist::class, 'user_tourist', 'user_id', 'tourist_id')
-                    ->withPivot('relationship')
-                    ->withTimestamps();
+        return $this->belongsToMany(Tourist::class, 'user_tourist', 'user_id', 'tourist_id');
     }
 
     public function reservations()

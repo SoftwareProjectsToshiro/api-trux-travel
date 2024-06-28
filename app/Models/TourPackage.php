@@ -32,4 +32,16 @@ class TourPackage extends Model
     {
         return $this->hasMany(Reservation::class, 'package_id');
     }
+
+    public function tourists()
+    {
+        return $this->belongsToMany(Tourist::class, 'tour_package_tourist')
+            ->using(TourPackageTourist::class)
+            ->withTimestamps();
+    }
+
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
 }

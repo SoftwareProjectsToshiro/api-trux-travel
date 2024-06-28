@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\Api\V1;
 
+use App\Models\Comment;
 use App\Models\Reservation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\Controller;
+use App\CentralLogics\Helpers;
 
 class ReservationController extends Controller
 {
@@ -14,7 +16,7 @@ class ReservationController extends Controller
      */
     public function index()
     {
-        //
+
     }
 
     /**
@@ -36,6 +38,7 @@ class ReservationController extends Controller
             'reservation_date' => 'required',
             'number_of_passengers' => 'required',
             'payment_method' => 'required',
+            'payment_status' => 'required',
             'status' => 'required'
         ]);
 
@@ -45,17 +48,33 @@ class ReservationController extends Controller
             ], 403);
         };
 
-        $reservation = Reservation::create($validator);
+        $reservation = new Reservation();
+        $reservation->user_id = $request->user_id;
+        $reservation->package_id = $request->package_id;
+        $reservation->reservation_date = $request->reservation_date;
+        $reservation->number_of_passengers = $request->number_of_passengers;
+        $reservation->payment_method = $request->payment_method;
+        $reservation->payment_status = $request->payment_status;
+        $reservation->status = $request->status;
+        $reservation->save();
 
-        return response()->json([
-            'reservation' => $reservation
-        ], 200);
+        Comment::create([
+            'tour_package_id' => $request->package_id,
+            'user_id' => $request->user_id,
+            'content' => '',
+            'title' => $reservation->package->nombre,
+            'rating' => 0,
+        ]);
+
+
+        $msg = 'Reserva creada con éxito.';
+        return response()->json(['msg' => $msg], 200);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Reservation $reservation)
+    public function show(Request $request, $id)
     {
         //
     }
