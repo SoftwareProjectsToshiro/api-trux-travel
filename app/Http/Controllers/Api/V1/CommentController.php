@@ -32,6 +32,6 @@ class CommentController extends Controller
     public function index($user_id)
     {
         $comments = Comment::where('user_id', $user_id)->get();
-        return response()->json(['comments' => $comments]);
+        return response()->json($comments);
     }
 }
