@@ -19,7 +19,7 @@ class TouristController extends Controller
         $tourist = Tourist::where('documento_identidad', $doc)->first();
         if (!$tourist) {
             return response()->json(['errors' => [
-                ['code' => 'documento_identidad', 'message' => 'Nuevo turista detectado, por favor registre sus datos.']
+                ['code' => 'documento identidad: ', 'message' => 'Turista no encontrado']
             ]], 404);
         }
 
@@ -49,7 +49,7 @@ class TouristController extends Controller
             'sexo' => ['required', 'string'],
             'email' => ['required', 'string', 'email'],
             'telefono' => ['required', 'string'],
-            'fecha_nacimiento' => ['required', 'date'],
+            'fecha_nacimiento' => ['required'],
             'user_email' => ['required', 'string', 'email'],
         ]);
 

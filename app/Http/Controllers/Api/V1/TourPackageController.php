@@ -44,9 +44,21 @@ class TourPackageController extends Controller
             'imagen' => 'required'
         ]);
 
-        $packages = TourPackage::create($validator);
+        if ($validator->fails()) {
+            return response()->json([
+                'errors' => Helpers::error_processor($validator)
+            ], 403);
+        };
 
-        return response()->json($tour, 200);
+        $package = new TourPackage();
+        $package->name = $request->name;
+        $package->description = $request->description;
+        $package->tipo_paquete = $request->tipo_paquete;
+        $package->precio = $request->precio;
+        $package->imagen = $request->imagen;
+        $package->save();
+
+        return response()->json($package, 200);
     }
 
     /**
