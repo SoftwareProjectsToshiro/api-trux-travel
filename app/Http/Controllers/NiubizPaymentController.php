@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\CentralLogics\Helpers;
+use App\Models\TourPackage;
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -12,6 +13,7 @@ class NiubizPaymentController extends Controller
 {
     public function viewNiubiz(Request $request, $order_id)
     {
+        $package = TourPackage::find($order_id);
         $code = "integraciones@niubiz.com.pe" . ':' . "_7z3@8fF";
         $encodedCode = base64_encode($code);
         $merchantId = 456879852;
@@ -32,18 +34,19 @@ class NiubizPaymentController extends Controller
             ],
             'body' => json_encode([
                 "channel"=>"web",
-                "amount"=>10,
+                "amount"=>$package->precio,
             ]),
         ]);
 
         $response_session = $response_sesion_token->getBody();
         $session_key = json_decode($response_session)->sessionKey;
 
-        return view('pay-niubiz', compact('session_key', 'merchantId', 'response_token'));
+        return view('pay-niubiz', compact('session_key', 'merchantId', 'response_token', 'package'));
     }
 
     public function success(Request $request, $order_id)
     {
+        $package = TourPackage::find($order_id);
         $transactionToken = $request->transactionToken;
         $response = new \GuzzleHttp\Client();
         $merchantId = 456879852;
@@ -57,9 +60,9 @@ class NiubizPaymentController extends Controller
                 "channel" => "web",
                 "countable" => true,
                 "order" => [
-                    "amount" => 10,
+                    "amount" => $package->precio,
                     "currency" => "PEN",
-                    "purchaseNumber" => 21,
+                    "purchaseNumber" => $package->id,
                     "tokenId" => $transactionToken
                 ]
             ]),

@@ -84,17 +84,17 @@
             alt="Logo">
         <h1>Pagar con Niubiz</h1>
         <div class="card-content">
-            <p>Número de Orden: 00021</p>
-            <p>Monto Total: S/.10</p>
+            <p>Número de Orden: {{$package->id}}</p>
+            <p>Monto Total: S/.{{$package->precio}}</p>
         </div>
-        <form action="{!!route('niubiz-success', ['order_id'=>12, '_token' => $response_token ])!!}" method="POST">
+        <form action="{!!route('niubiz-success', ['order_id'=>$package->id, '_token' => $response_token ])!!}" method="POST">
             <script type="text/javascript"
                 src="https://static-content-qas.vnforapps.com/env/sandbox/js/checkout.js"
                 data-sessiontoken="{{$session_key}}"
                 data-channel="web"
                 data-merchantid="{{$merchantId}}"
-                data-purchasenumber="00021"
-                data-amount="10"
+                data-purchasenumber="{{$package->id}}"
+                data-amount="{{$package->precio}}"
                 data-expirationminutes="20"
                 data-timeouturl="about:blank"
                 data-merchantlogo="img/niubiz.png"
