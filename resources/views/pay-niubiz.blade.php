@@ -80,7 +80,7 @@
 <body>
     <div class="container">
         <img class="logo"
-            src="https://firebasestorage.googleapis.com/v0/b/reactwebapp-bf5ca.appspot.com/o/WhatsApp%20Image%202024-04-28%20at%2000.27.57.jpeg?alt=media&token=2aa675c6-6bff-4965-84e2-591b3bbaddc2"
+            src="https://firebasestorage.googleapis.com/v0/b/react-web-c4127.appspot.com/o/niubiz.png?alt=media&token=a7f32c9d-fd50-4446-b6a2-0c019b0d3ec5"
             alt="Logo">
         <h1>Pagar con Niubiz</h1>
         <div class="card-content">
