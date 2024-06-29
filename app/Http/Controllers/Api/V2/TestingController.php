@@ -12,10 +12,16 @@ class TestingController extends Controller
     {
         $packageId = 1;
         $userId = 1;
-        $reservation = Reservation::with(['package'])
-            ->where('package_id', $packageId)
-            ->where('user_id', $userId)
-            ->firstOrFail();
+        try{
+            $reservation = Reservation::with(['package'])
+                ->where('package_id', $packageId)
+                ->where('user_id', $userId)
+                ->firstOrFail();
+        } catch(\Exception $e){
+            return response()->json([
+                'message' => 'Reservation not found'
+            ], 404);
+        }
 
         $packagePrice = $reservation->package->precio;
 
