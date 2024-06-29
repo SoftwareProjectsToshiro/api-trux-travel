@@ -12,14 +12,24 @@ use Illuminate\Support\Str;
 
 class NiubizPaymentController extends Controller
 {
-    public function viewNiubiz(Request $request, $order_id)
+    public function viewNiubiz(Request $request, $order_id, $user_id)
     {
 
-        $package = TourPackage::with(['reservations', 'tourists'])
-            ->findOrFail($order_id);
+        try{
+            $reservation = Reservation::with(['package'])
+                ->where('package_id', $order_id)
+                ->where('user_id', $user_id)
+                ->firstOrFail();
+        } catch(\Exception $e){
+            return response()->json([
+                'message' => 'Reservation not found'
+            ], 404);
+        }
 
-        $packagePrice = $package->price;
-        $numberOfTourists = $package->tourists->count();
+        $packagePrice = $reservation->package->precio;
+
+        $numberOfTourists = $reservation->number_of_passengers;
+
         $totalPrice = $packagePrice * $numberOfTourists;
 
         $code = "integraciones@niubiz.com.pe" . ':' . "_7z3@8fF";
@@ -49,12 +59,28 @@ class NiubizPaymentController extends Controller
         $response_session = $response_sesion_token->getBody();
         $session_key = json_decode($response_session)->sessionKey;
 
-        return view('pay-niubiz', compact('session_key', 'merchantId', 'response_token', 'package'));
+        return view('pay-niubiz', compact('session_key', 'merchantId', 'response_token', 'order_id', 'user_id','totalPrice'));
     }
 
-    public function success(Request $request, $order_id)
+    public function success(Request $request, $order_id, $user_id)
     {
-        $package = TourPackage::find($order_id);
+        try{
+            $reservation = Reservation::with(['package'])
+                ->where('package_id', $order_id)
+                ->where('user_id', $user_id)
+                ->firstOrFail();
+        } catch(\Exception $e){
+            return response()->json([
+                'message' => 'Reservation not found'
+            ], 404);
+        }
+
+        $packagePrice = $reservation->package->precio;
+
+        $numberOfTourists = $reservation->number_of_passengers;
+
+        $totalPrice = $packagePrice * $numberOfTourists;
+
         $transactionToken = $request->transactionToken;
         $response = new \GuzzleHttp\Client();
         $merchantId = 456879852;
@@ -68,9 +94,9 @@ class NiubizPaymentController extends Controller
                 "channel" => "web",
                 "countable" => true,
                 "order" => [
-                    "amount" => $package->precio,
+                    "amount" => $totalPrice,
                     "currency" => "PEN",
-                    "purchaseNumber" => $package->id,
+                    "purchaseNumber" => $order_id,
                     "tokenId" => $transactionToken
                 ]
             ]),
