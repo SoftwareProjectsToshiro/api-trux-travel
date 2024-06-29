@@ -25,12 +25,15 @@ class TourPackage extends Model
 
     public function tours()
     {
-        return $this->hasMany(Tour::class, 'tour_package_id');
+        return $this->hasMany(Tour::class, 'tour_package_id')
+            ->where('isActived', true)
+            ->where('isDeleted', false);
     }
 
     public function reservations()
     {
-        return $this->hasMany(Reservation::class, 'package_id');
+        return $this->hasMany(Reservation::class, 'package_id')
+            ->where('status', '!=', 'cancelled');
     }
 
     public function tourists()
