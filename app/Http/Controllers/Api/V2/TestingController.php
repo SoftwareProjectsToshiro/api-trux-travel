@@ -4,21 +4,32 @@ namespace App\Http\Controllers\Api\V2;
 
 use App\Http\Controllers\Controller;
 use App\Models\TourPackage;
+use App\Models\Reservation;
 
 class TestingController extends Controller
 {
     public function index()
     {
-        $order_id = 1;
-        $package = TourPackage::with(['reservations', 'tourists'])
-            ->findOrFail($order_id);
+        $packageId = 1;
+        $userId = 1;
+        $reservation = Reservation::with(['package'])
+            ->where('package_id', $packageId)
+            ->where('user_id', $userId)
+            ->firstOrFail();
 
-        $packagePrice = $package->precio;
-        $numberOfTourists = $package->tourists->count();
+        $packagePrice = $reservation->package->precio;
+
+        $numberOfTourists = $reservation->tourists()->count();
+
         $totalPrice = $packagePrice * $numberOfTourists;
 
         return response()->json([
-            'totalPrice' => $totalPrice
+            'reservation_id' => $reservation->id,
+            'user_id' => $reservation->user_id,
+            'package_id' => $reservation->package_id,
+            'package_price' => $packagePrice,
+            'number_of_tourists' => $numberOfTourists,
+            'total_price' => $totalPrice,
         ], 200);
     }
 }

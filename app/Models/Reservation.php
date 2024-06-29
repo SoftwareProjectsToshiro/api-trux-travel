@@ -36,6 +36,14 @@ class Reservation extends Model
         return $this->belongsTo(TourPackage::class, 'package_id');
     }
 
+    public function tourists()
+    {
+        return $this->belongsToMany(Tourist::class, 'tour_package_tourist', 'tour_package_id', 'tourist_id')
+            ->whereHas('userTourist', function ($query) {
+                $query->where('user_id', $this->user_id);
+            });
+    }
+
     public function payments()
     {
         return $this->hasMany(Payment::class, 'reservation_id');

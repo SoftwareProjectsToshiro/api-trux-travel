@@ -34,6 +34,11 @@ class Tourist extends Model
             ->withTimestamps();
     }
 
+    public function userTourist()
+    {
+        return $this->hasOne(UserTourist::class, 'tourist_id', 'id');
+    }
+
     public function reservations()
     {
         return $this->hasMany(Reservation::class);
