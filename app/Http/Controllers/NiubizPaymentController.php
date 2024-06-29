@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\CentralLogics\Helpers;
+use App\Models\Reservation;
 use App\Models\TourPackage;
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
@@ -13,7 +14,14 @@ class NiubizPaymentController extends Controller
 {
     public function viewNiubiz(Request $request, $order_id)
     {
-        $package = TourPackage::find($order_id);
+
+        $package = TourPackage::with(['reservations', 'tourists'])
+            ->findOrFail($order_id);
+
+        $packagePrice = $package->price;
+        $numberOfTourists = $package->tourists->count();
+        $totalPrice = $packagePrice * $numberOfTourists;
+
         $code = "integraciones@niubiz.com.pe" . ':' . "_7z3@8fF";
         $encodedCode = base64_encode($code);
         $merchantId = 456879852;
@@ -34,7 +42,7 @@ class NiubizPaymentController extends Controller
             ],
             'body' => json_encode([
                 "channel"=>"web",
-                "amount"=>$package->precio,
+                "amount"=>$totalPrice,
             ]),
         ]);
 

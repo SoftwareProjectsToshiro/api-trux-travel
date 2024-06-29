@@ -66,7 +66,6 @@ class ReservationController extends Controller
             'rating' => 0,
         ]);
 
-
         $msg = 'Reserva creada con éxito.';
         return response()->json(['msg' => $msg], 200);
     }

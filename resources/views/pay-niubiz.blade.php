@@ -84,7 +84,7 @@
             alt="Logo">
         <h1>Pagar con Niubiz</h1>
         <div class="card-content">
-            <p>Número de Orden: {{$package->id}}</p>
+            <p>Paqiete #{{$package->id}}</p>
             <p>Monto Total: S/.{{$package->precio}}</p>
         </div>
         <form action="{!!route('niubiz-success', ['order_id'=>$package->id, '_token' => $response_token ])!!}" method="POST">
