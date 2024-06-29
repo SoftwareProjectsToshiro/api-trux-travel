@@ -84,7 +84,7 @@
             alt="Logo">
         <h1>Pagar con Niubiz</h1>
         <div class="card-content">
-            <p>Paqiete #{{$order_id}}</p>
+            <p>Paquete #{{$reservation->package->nombre}}</p>
             <p>Monto Total: S/.{{$totalPrice}}</p>
         </div>
         <form action="{!!route('niubiz-success', ['order_id'=>$order_id, 'user_id' => $user_id, '_token' => $response_token ])!!}" method="POST">
@@ -93,7 +93,7 @@
                 data-sessiontoken="{{$session_key}}"
                 data-channel="web"
                 data-merchantid="{{$merchantId}}"
-                data-purchasenumber="{{$order_id}}"
+                data-purchasenumber="{{$reservation->package_id}}"
                 data-amount="{{$totalPrice}}"
                 data-expirationminutes="20"
                 data-timeouturl="about:blank"

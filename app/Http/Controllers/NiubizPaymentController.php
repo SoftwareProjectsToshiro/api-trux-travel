@@ -59,7 +59,7 @@ class NiubizPaymentController extends Controller
         $response_session = $response_sesion_token->getBody();
         $session_key = json_decode($response_session)->sessionKey;
 
-        return view('pay-niubiz', compact('session_key', 'merchantId', 'response_token', 'order_id', 'user_id','totalPrice'));
+        return view('pay-niubiz', compact('session_key', 'merchantId', 'response_token', 'reservation','totalPrice'));
     }
 
     public function success(Request $request, $order_id, $user_id)
