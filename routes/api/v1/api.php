@@ -49,5 +49,6 @@ Route::group(['namespace' => 'Api\V1', 'middleware'=>['api']], function () {
     Route::group(['prefix' => 'comments'], function () {
         Route::post('/', 'CommentController@store');
         Route::get('/{user_id}', 'CommentController@index');
+        Route::put('/{id}', 'CommentController@update');
     });
 });

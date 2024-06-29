@@ -43,4 +43,26 @@ class CommentController extends Controller
         $comments = Comment::where('user_id', $user_id)->get();
         return response()->json($comments);
     }
+
+    public function update(Request $request, $id)
+    {
+        $validated = Validator::make($request->all(),[
+            'content_' => 'required|string',
+            'rating' => 'required|integer',
+        ]);
+
+        if ($validated->fails()) {
+            return response()->json([
+                'errors' => Helpers::error_processor($validated)
+            ], 403);
+        }
+
+        $comment = Comment::find($id);
+        $comment->content = $request->content_;
+        $comment->rating = $request->rating;
+        $comment->save();
+
+        $msg = 'Comentario actualizado correctamente.';
+        return response()->json(['msg' => $msg], 200);
+    }
 }
