@@ -19,7 +19,7 @@ class TestingController extends Controller
 
         $packagePrice = $reservation->package->precio;
 
-        $numberOfTourists = $reservation->tourists()->count();
+        $numberOfTourists = $reservation->number_of_passengers;
 
         $totalPrice = $packagePrice * $numberOfTourists;
 
