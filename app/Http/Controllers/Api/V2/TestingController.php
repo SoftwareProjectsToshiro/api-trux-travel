@@ -18,9 +18,6 @@ class TestingController extends Controller
         $totalPrice = $packagePrice * $numberOfTourists;
 
         return response()->json([
-            'package' => $package,
-            'packagePrice' => $packagePrice,
-            'numberOfTourists' => $numberOfTourists,
             'totalPrice' => $totalPrice
         ], 200);
     }
