@@ -15,5 +15,5 @@ Route::get('payment-success', [PaymentController::class, 'success'])->name('paym
 Route::get('payment-fail', [PaymentController::class, 'fail'])->name('payment-fail');
 
 /*Niubiz*/
-Route::post('niubiz-success/{order_id}/{_token}', [NiubizPaymentController::class, 'success'])->name('niubiz-success');
+Route::post('niubiz-success/{reservation_id}/{_token}', [NiubizPaymentController::class, 'success'])->name('niubiz-success');
 Route::get('niubiz/{reservation_id}', [NiubizPaymentController::class, 'viewNiubiz'])->name('view-niubiz');
