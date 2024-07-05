@@ -105,7 +105,11 @@ class NiubizPaymentController extends Controller
         $response = json_decode($response->getBody());
 
         if($response->dataMap->ACTION_CODE == "000"){
-            $reservation->update(['isPaid'=>true, 'payment_status' => 'Paid', 'status' => 'Reservado']);
+            $reservation_update = Reservation::find($order_id);
+            $reservation_update->isPaid = true;
+            $reservation_update->payment_status = 'Paid';
+            $reservation_update->status = 'Reservado';
+            $reservation_update->save();
             return redirect()->route('payment-success');
         } else {
             return redirect()->route('payment-fail');

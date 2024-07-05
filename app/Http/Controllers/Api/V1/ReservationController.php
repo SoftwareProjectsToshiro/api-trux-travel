@@ -49,6 +49,7 @@ class ReservationController extends Controller
         };
 
         $reservation = new Reservation();
+        $reservation->id = 100000 + Reservation::all()->count() + 1;
         $reservation->user_id = $request->user_id;
         $reservation->package_id = $request->package_id;
         $reservation->reservation_date = $request->reservation_date;
