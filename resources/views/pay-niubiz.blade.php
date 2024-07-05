@@ -93,7 +93,7 @@
                 data-sessiontoken="{{$session_key}}"
                 data-channel="web"
                 data-merchantid="{{$merchantId}}"
-                data-purchasenumber="{{$reservation->package_id}}"
+                data-purchasenumber="{{$reservation->id}}"
                 data-amount="{{$totalPrice}}"
                 data-expirationminutes="20"
                 data-timeouturl="about:blank"
