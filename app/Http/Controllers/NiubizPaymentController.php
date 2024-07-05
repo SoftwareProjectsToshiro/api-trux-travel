@@ -12,13 +12,12 @@ use Illuminate\Support\Str;
 
 class NiubizPaymentController extends Controller
 {
-    public function viewNiubiz(Request $request, $order_id, $user_id)
+    public function viewNiubiz(Request $request, $reservation_id)
     {
 
         try{
             $reservation = Reservation::with(['package'])
-                ->where('package_id', $order_id)
-                ->where('user_id', $user_id)
+                ->where('id', $reservation_id)
                 ->firstOrFail();
         } catch(\Exception $e){
             return response()->json([
@@ -62,12 +61,11 @@ class NiubizPaymentController extends Controller
         return view('pay-niubiz', compact('session_key', 'merchantId', 'response_token', 'reservation','totalPrice'));
     }
 
-    public function success(Request $request, $order_id, $user_id)
+    public function success(Request $request, $reservation_id)
     {
         try{
             $reservation = Reservation::with(['package'])
-                ->where('package_id', $order_id)
-                ->where('user_id', $user_id)
+                ->where('id', $reservation_id)
                 ->firstOrFail();
         } catch(\Exception $e){
             return response()->json([
@@ -96,7 +94,7 @@ class NiubizPaymentController extends Controller
                 "order" => [
                     "amount" => $totalPrice,
                     "currency" => "PEN",
-                    "purchaseNumber" => $order_id,
+                    "purchaseNumber" => $reservation_id,
                     "tokenId" => $transactionToken
                 ]
             ]),
@@ -105,7 +103,7 @@ class NiubizPaymentController extends Controller
         $response = json_decode($response->getBody());
 
         if($response->dataMap->ACTION_CODE == "000"){
-            $reservation_update = Reservation::find($reservation->id);
+            $reservation_update = Reservation::find($reservation_id);
             $reservation_update->isPaid = true;
             $reservation_update->payment_status = 'Paid';
             $reservation_update->status = 'Reservado';

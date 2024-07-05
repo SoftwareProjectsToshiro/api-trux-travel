@@ -68,7 +68,7 @@ class ReservationController extends Controller
         ]);
 
         $msg = 'Reserva creada con éxito.';
-        return response()->json(['msg' => $msg], 200);
+        return response()->json(['msg' => $msg,'reservation_id' => $reservation->id], 200);
     }
 
     /**

@@ -87,7 +87,7 @@
             <p>Paquete: {{$reservation->package->nombre}}</p>
             <p>Monto Total: S/.{{$totalPrice}}</p>
         </div>
-        <form action="{!!route('niubiz-success', ['order_id'=>$reservation->package_id, 'user_id' => $reservation->user_id, '_token' => $response_token ])!!}" method="POST">
+        <form action="{!!route('niubiz-success', ['reservation_id'=>$reservation->id, '_token' => $response_token ])!!}" method="POST">
             <script type="text/javascript"
                 src="https://static-content-qas.vnforapps.com/env/sandbox/js/checkout.js"
                 data-sessiontoken="{{$session_key}}"

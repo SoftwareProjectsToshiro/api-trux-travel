@@ -10,32 +10,9 @@ class TestingController extends Controller
 {
     public function index()
     {
-        $packageId = 1;
-        $userId = 1;
-        try{
-            $reservation = Reservation::with(['package'])
-                ->where('package_id', $packageId)
-                ->where('user_id', $userId)
-                ->firstOrFail();
-        } catch(\Exception $e){
-            return response()->json([
-                'message' => 'Reservation not found'
-            ], 404);
-        }
-
-        $packagePrice = $reservation->package->precio;
-
-        $numberOfTourists = $reservation->number_of_passengers;
-
-        $totalPrice = $packagePrice * $numberOfTourists;
-
         return response()->json([
-            'reservation_id' => $reservation->id,
-            'user_id' => $reservation->user_id,
-            'package_id' => $reservation->package_id,
-            'package_price' => $packagePrice,
-            'number_of_tourists' => $numberOfTourists,
-            'total_price' => $totalPrice,
-        ], 200);
+            'message' => 'Hello from TestingController@index',
+            'data' => 'This is a test data'
+        ]);
     }
 }
